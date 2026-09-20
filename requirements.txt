@@ -1,0 +1,39 @@
+pandas
+SQLAlchemy
+PyMySQL
+python_dotenv
+requests
+Pillow
+APScheduler
+jupyterlab
+ipykernel
+mysql-connector-python
+notebook
+numpy
+openpyxl
+oracledb
+#Tkinter
+#SQLite
+setuptools
+twilio
+
+fastapi
+uvicorn
+psycopg2-binary
+prisma
+
+#source venv/bin/activate
+#python -m pil install -requirements.txt
+#python -m pip install --upgrade pip setuptools
+#python -m pip install --upgrade pip setuptools wheel
+#python -m pip install pip==21.3.1
+#pip install psycopg2-binary
+#pip index versions prisma
+#pip install fastapi uvicorn or pip install uvicorn fastapi
+
+#pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org prisma-client
+
+
+
+
+
