@@ -1,5 +1,8 @@
-venv/
-__pycache__/
-.idea/
-*.pyc
+node_modules/
+dist/
+.DS_Store
+
+# Keep environment variables out of version control
 .env
+.env.*
+!.env.example

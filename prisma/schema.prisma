@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EventStatus {
+  DRAFT
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+model User {
+  id           String @id @default(uuid())
+  email        String @unique
+  username     String @unique
+  passwordHash String
+
+  firstName String?
+  lastName  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventsCreated      Event[]
+  interests          UserInterest[]
+  eventParticipation EventParticipant[]
+
+  sentFriendRequests     Friendship[] @relation("Requester")
+  receivedFriendRequests Friendship[] @relation("Receiver")
+}
+
+model Event {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+
+  latitude  Decimal @db.Decimal(9, 6)
+  longitude Decimal @db.Decimal(9, 6)
+
+  startDate DateTime
+  endDate   DateTime?
+
+  status EventStatus @default(ACTIVE)
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  participants EventParticipant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EventParticipant {
+  id String @id @default(uuid())
+
+  userId  String
+  eventId String
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  joinedAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+model Interest {
+  id   String @id @default(uuid())
+  name String @unique
+
+  users UserInterest[]
+}
+
+model UserInterest {
+  id String @id @default(uuid())
+
+  userId     String
+  interestId String
+
+  user     User     @relation(fields: [userId], references: [id])
+  interest Interest @relation(fields: [interestId], references: [id])
+
+  @@unique([userId, interestId])
+}
+
+model Friendship {
+  id String @id @default(uuid())
+
+  requesterId String
+  receiverId  String
+
+  status FriendshipStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  requester User @relation("Requester", fields: [requesterId], references: [id])
+
+  receiver User @relation("Receiver", fields: [receiverId], references: [id])
+
+  @@unique([requesterId, receiverId])
+}
+model Location {
+id String @id @default(uuid())
+ 
+name String
+description String?
+ 
+latitude Decimal @db.Decimal(9,6)
+longitude Decimal @db.Decimal(9,6)
+ 
+createdAt DateTime @default(now())
+}
